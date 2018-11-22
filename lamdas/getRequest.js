@@ -3,10 +3,16 @@
 const AWS = require('aws-sdk');
 const s3 = new AWS.S3();
 
-module.exports.getRequest = async (event, context) => {
-  s3.listBuckets( (err,data) => {
-    if(err)
+module.exports.getRequest = async (event, context, callback) => {
+  var bucketParams = {
+    Bucket: 'treasure-chest-capstone'
+  }
+  
+  s3.listObjects(bucketParams, (err,data) => {
+    if(err) {
       console.log('error',error);
+    }
+    console.log(data);
     const response = {
       statusCode: 200,
       headers: {
@@ -17,7 +23,10 @@ module.exports.getRequest = async (event, context) => {
         message: data
       })
     }
-      
+
+
+    callback(null, response);
+  
   });
 
   // Use this code if you don't use the http event with the LAMBDA-PROXY integration

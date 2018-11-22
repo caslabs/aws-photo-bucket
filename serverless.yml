@@ -11,7 +11,7 @@
 #
 # Happy Coding!
 
-service: aws-nodejs # NOTE: update this with your service name
+service: aws-photobucket-Alex # NOTE: update this with your service name
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
@@ -22,8 +22,13 @@ provider:
   runtime: nodejs8.10
 
 # you can overwrite defaults here
-#  stage: dev
+  stage: dev
   region: us-west-2
+  iamRoleStatements: #
+    - Effect: Allow
+      Action:
+        - s3:*
+      Resource: "*"
 
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
@@ -55,11 +60,11 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  hello:
-    handler: lamdas/handler.getRequest
+  getRequest:
+    handler: lamdas/getRequest.getRequest
     events:
       - http:
-          path: listBuckets
+          path: getRequest
           method: get
           cors: true
 
